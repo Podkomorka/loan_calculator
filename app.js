@@ -27,7 +27,6 @@ function calculateResults(){
   // ___ to the power of ___
   const x = Math.pow(1 + calculatedInterest, calculatedPayments);
   const monthly = (principal*x*calculatedInterest)/(x-1);
-
   // only display results if nothing went wrong, or throw and error
   if(isFinite(monthly)){
     // sets UI to our calculated value at 2 decimal places
@@ -36,7 +35,10 @@ function calculateResults(){
     totalInterest.value = ((monthly*calculatedPayments)-principal).toFixed(2);
     document.getElementById('results').style.display = 'block';
   } else {
-    showError('Please check your numbers');
+    // only shows an error message if there isnt already one, prevent spamming error message
+    if(document.querySelector('.card').firstElementChild.className !== 'alert alert-danger'){
+      showError('Please check your numbers');    
+    }
   }
 }
 
@@ -55,7 +57,7 @@ function showError(error){
   // Create text node and append to div
   errorDiv.appendChild(document.createTextNode(error));
 
-  // Insert error above heading
+  // Insert error above heading, insertBefore takes a parent and inserts before a child
   card.insertBefore(errorDiv, heading);
 
   // Clear error after 3 seconds
